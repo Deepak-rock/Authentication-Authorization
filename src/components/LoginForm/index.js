@@ -52,6 +52,28 @@ class LoginForm extends Component {
     )
   }
 
+  onSuccesfullLogin = () => {
+    const {history} = this.props
+    history.replace('/')
+  }
+
+  submitForm = async event => {
+    event.preventDefault()
+    const {username, password} = this.state
+    const userDetails = {username, password}
+    const url = 'https://apis.ccbp.in/login'
+    const options = {
+      method: 'POST',
+      body: JSON.stringify(userDetails),
+    }
+    const response = await fetch(url, options)
+    const data = await response.json()
+    console.log(data)
+    if (response.ok === true) {
+      this.onSuccesfullLogin()
+    }
+  }
+
   render() {
     return (
       <div className="login-form-container">
@@ -65,7 +87,7 @@ class LoginForm extends Component {
           className="login-image"
           alt="website login"
         />
-        <form className="form-container">
+        <form className="form-container" onSubmit={this.submitForm}>
           <img
             src="https://assets.ccbp.in/frontend/react-js/nxt-trendz-logo-img.png"
             className="login-website-logo-desktop-image"
